@@ -1,7 +1,12 @@
 package com.br.pauta.controller;
 
 import com.br.pauta.document.Pauta;
+import com.br.pauta.document.Voto;
+import com.br.pauta.dto.PautaDTO;
+import com.br.pauta.dto.SessaoDTO;
+import com.br.pauta.dto.VotoDTO;
 import com.br.pauta.service.PautaService;
+import com.br.pauta.service.SessaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +20,9 @@ public class PautaController {
     @Autowired
     PautaService service;
 
+    @Autowired
+    SessaoService sessaoService;
+
     @GetMapping
     public List<Pauta> getPautas(){
         return service.findAll();
@@ -26,12 +34,17 @@ public class PautaController {
     }
 
     @PostMapping
-    public Pauta savePauta(@RequestBody Pauta pauta){
-        return service.save(pauta);
+    public Pauta savePauta(@RequestBody PautaDTO pautaDTO){
+        return service.save(pautaDTO);
     }
 
-//    @PostMapping(value = "/open")
-//    public Pauta openSession(@RequestBody SessionDTO sessionDTO) {
-//        return service.openSession(sessionDTO);
-//    }
+    @PutMapping(value = "/sessao")
+    public Pauta openSession(@RequestBody SessaoDTO sessaoDTO) {
+        return sessaoService.openSession(sessaoDTO);
+    }
+
+    @PutMapping(value = "/sessao/voto")
+    public Voto addVoteToSession(@RequestBody VotoDTO votoDTO) {
+        return sessaoService.addVoteToSession(votoDTO);
+    }
 }
