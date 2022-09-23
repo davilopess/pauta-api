@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class SessaoServiceImpl implements SessaoService {
@@ -44,4 +45,16 @@ public class SessaoServiceImpl implements SessaoService {
         pautaRepository.save(pauta);
         return voto;
     }
+
+    @Override
+    public List<Pauta> checkPautasWithOpenSessions(){
+        return pautaRepository.findBySessionOpenTrueAndSessionClosedFalse();
+    }
+
+    @Override
+    public Pauta closeSession(Pauta pauta) {
+        return pautaRepository.save(pauta);
+    }
+
+
 }

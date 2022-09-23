@@ -29,4 +29,10 @@ public class Pauta {
     public void addVoto(Voto voto){
         votos.add(voto);
     }
+    public boolean sessionExpired(){
+        return this.timeToClose.isBefore(Instant.now());
+    }
+    public boolean cpfAlreadyVoted(String cpf){
+        return this.votos.stream().anyMatch(voto -> voto.getAssociadoCpf().equals(cpf));
+    }
 }

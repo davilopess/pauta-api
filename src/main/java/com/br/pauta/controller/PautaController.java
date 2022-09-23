@@ -8,6 +8,7 @@ import com.br.pauta.dto.VotoDTO;
 import com.br.pauta.service.PautaService;
 import com.br.pauta.service.SessaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class PautaController {
     }
 
     @GetMapping(value = "/{id}")
-    public Optional<Pauta> getPautaId(@PathVariable String id){
+    public PautaDTO getPautaId(@PathVariable String id){
         return service.findById(id);
     }
 
