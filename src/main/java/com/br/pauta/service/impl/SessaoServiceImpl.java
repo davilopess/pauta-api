@@ -6,6 +6,7 @@ import com.br.pauta.dto.SessaoDTO;
 import com.br.pauta.dto.VotoDTO;
 import com.br.pauta.repository.PautaRepository;
 import com.br.pauta.service.SessaoService;
+import com.br.pauta.service.ValidarCpf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class SessaoServiceImpl implements SessaoService {
 
     @Autowired
     PautaRepository pautaRepository;
+
+    @Autowired
+    ValidarCpf validarCpf;
 
     @Override
     public Pauta openSession(SessaoDTO sessaoDTO) {
