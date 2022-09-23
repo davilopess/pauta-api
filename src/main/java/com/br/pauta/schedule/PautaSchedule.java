@@ -33,7 +33,5 @@ public class PautaSchedule {
             sessaoService.closeSession(p);
             logger.info("Sessão de votação da pauta " + p.getName() + " encerrada.");
         });
-
-
     }
 }
