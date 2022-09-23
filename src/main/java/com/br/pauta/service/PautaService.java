@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PautaService{
-    List<Pauta> findAll();
+    List<PautaDTO> findAll();
 
     PautaDTO findById(String id);
 
-    Pauta save(PautaDTO pautaDTO);
+    PautaDTO save(PautaDTO pautaDTO);
 }

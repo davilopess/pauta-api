@@ -25,7 +25,7 @@ public class PautaController {
     SessaoService sessaoService;
 
     @GetMapping
-    public List<Pauta> getPautas(){
+    public List<PautaDTO> getPautas(){
         return service.findAll();
     }
 
@@ -35,7 +35,7 @@ public class PautaController {
     }
 
     @PostMapping
-    public Pauta savePauta(@RequestBody PautaDTO pautaDTO){
+    public PautaDTO savePauta(@RequestBody PautaDTO pautaDTO){
         return service.save(pautaDTO);
     }
 

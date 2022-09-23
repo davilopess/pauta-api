@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PautaServiceImpl implements PautaService{
@@ -21,8 +22,8 @@ public class PautaServiceImpl implements PautaService{
         PautaRepository repository;
 
         @Override
-        public List<Pauta> findAll() {
-            return repository.findAll();
+        public List<PautaDTO> findAll() {
+            return repository.findAll().stream().map(p -> PautaMapper.toDto(p)).collect(Collectors.toList());
         }
 
         @Override
@@ -32,12 +33,12 @@ public class PautaServiceImpl implements PautaService{
         }
 
         @Override
-        public Pauta save(PautaDTO pautaDTO) {
+        public PautaDTO save(PautaDTO pautaDTO) {
             Pauta pauta = Pauta.builder()
                     .name(pautaDTO.getName())
                     .sessionClosed(false)
                     .sessionOpen(false)
                     .build();
-            return repository.save(pauta);
+            return PautaMapper.toDto(repository.save(pauta));
         }
 }
