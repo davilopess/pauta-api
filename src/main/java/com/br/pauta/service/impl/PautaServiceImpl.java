@@ -5,6 +5,8 @@ import com.br.pauta.document.Voto;
 import com.br.pauta.dto.PautaDTO;
 import com.br.pauta.dto.SessaoDTO;
 import com.br.pauta.dto.VotoDTO;
+import com.br.pauta.exceptions.RequiredObjectIsNullException;
+import com.br.pauta.exceptions.ResourceNotFoundException;
 import com.br.pauta.mapper.PautaMapper;
 import com.br.pauta.repository.PautaRepository;
 import com.br.pauta.service.PautaService;
@@ -28,12 +30,16 @@ public class PautaServiceImpl implements PautaService{
 
         @Override
         public PautaDTO findById(String id) {
-            Pauta pauta = repository.findById(id).orElseThrow();
+            Pauta pauta = repository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Pauta nao informada para esse ID!"));
             return PautaMapper.toDto(pauta);
         }
 
         @Override
         public PautaDTO save(PautaDTO pautaDTO) {
+
+            if (pautaDTO== null) throw new RequiredObjectIsNullException();
+
             Pauta pauta = Pauta.builder()
                     .name(pautaDTO.getName())
                     .sessionClosed(false)
