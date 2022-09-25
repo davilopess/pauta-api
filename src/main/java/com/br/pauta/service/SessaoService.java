@@ -2,6 +2,7 @@ package com.br.pauta.service;
 
 import com.br.pauta.document.Pauta;
 import com.br.pauta.document.Voto;
+import com.br.pauta.dto.ResultadoDTO;
 import com.br.pauta.dto.SessaoDTO;
 import com.br.pauta.dto.VotoDTO;
 
@@ -16,5 +17,7 @@ public interface SessaoService {
     List<Pauta> checkPautasWithOpenSessions();
 
     Pauta closeSession(Pauta pauta);
+
+    ResultadoDTO resultOfSession(Pauta pauta);
 
 }

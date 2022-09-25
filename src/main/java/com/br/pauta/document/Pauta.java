@@ -31,7 +31,7 @@ public class Pauta {
         votos.add(voto);
     }
     public boolean sessionExpired(){
-        return this.timeToClose.isBefore(Instant.now());
+        return this.timeToClose.isBefore(Instant.now()) && !this.sessionClosed;
     }
     public boolean cpfAlreadyVoted(String cpf){
         return this.votos.stream().anyMatch(voto -> voto.getAssociadoCpf().equals(cpf));

@@ -2,6 +2,7 @@ package com.br.pauta.service.impl;
 
 import com.br.pauta.document.Pauta;
 import com.br.pauta.document.Voto;
+import com.br.pauta.dto.ResultadoDTO;
 import com.br.pauta.dto.SessaoDTO;
 import com.br.pauta.dto.VotoDTO;
 import com.br.pauta.exceptions.RequiredObjectIsNullException;
@@ -60,6 +61,7 @@ public class SessaoServiceImpl implements SessaoService {
 
     @Override
     public Pauta closeSession(Pauta pauta) {
+        pauta.setSessionClosed(true);
         return pautaRepository.save(pauta);
     }
 
@@ -68,6 +70,19 @@ public class SessaoServiceImpl implements SessaoService {
         if (pauta.cpfAlreadyVoted(cpf)) throw new RequiredObjectIsNullException("Voto já foi realizado por esse associado.");
         if(!validarCpf.validar(cpf)) throw new RequiredObjectIsNullException("Associado não apode realizar o voto.");
         return true;
+    }
+
+    public ResultadoDTO resultOfSession(Pauta pauta){
+        ResultadoDTO resultado = ResultadoDTO.builder().build();
+
+         pauta.getVotos().forEach(voto -> {
+             if (voto.getVoto().equals("Sim")) {
+                 resultado.setVotoSim(resultado.getVotoSim() + 1);
+             } else if(voto.getVoto().equals("Não")){
+                 resultado.setVotoNao(resultado.getVotoNao() + 1);
+             }
+         });
+        return resultado;
     }
 
 }
