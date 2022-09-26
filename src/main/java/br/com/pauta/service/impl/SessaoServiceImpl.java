@@ -5,11 +5,15 @@ import br.com.pauta.document.Voto;
 import br.com.pauta.dto.ResultadoDTO;
 import br.com.pauta.dto.SessaoDTO;
 import br.com.pauta.dto.VotoDTO;
+import br.com.pauta.exceptions.CpfDuplicadoException;
 import br.com.pauta.exceptions.RequiredObjectIsNullException;
 import br.com.pauta.exceptions.ResourceNotFoundException;
 import br.com.pauta.repository.PautaRepository;
+import br.com.pauta.schedule.PautaSchedule;
 import br.com.pauta.service.SessaoService;
 import br.com.pauta.service.ValidarCpf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,7 @@ public class SessaoServiceImpl implements SessaoService {
     @Autowired
     ValidarCpf validarCpf;
 
+    private static final Logger logger = LoggerFactory.getLogger(SessaoServiceImpl.class);
     @Override
     public Pauta openSession(SessaoDTO sessaoDTO) {
         Pauta pauta = pautaRepository.findById(sessaoDTO.getPautaId())
@@ -35,6 +40,8 @@ public class SessaoServiceImpl implements SessaoService {
             pauta.setTimeToClose(Instant.now().plusSeconds(pauta.getMinutes() * 60));
             pauta.setSessionOpen(true);
         }
+
+        logger.info("Abrindo sessão de votação.");
 
         return pautaRepository.save(pauta);
     }
@@ -51,6 +58,8 @@ public class SessaoServiceImpl implements SessaoService {
         pauta.addVoto(voto);
 
         pautaRepository.save(pauta);
+
+        logger.info("Adicionado voto a sessão.");
         return voto;
     }
 
@@ -66,9 +75,9 @@ public class SessaoServiceImpl implements SessaoService {
     }
 
     public boolean validateVoteInSession(Pauta pauta, String cpf){
-        if (pauta.sessionExpired()) throw new RequiredObjectIsNullException("Sessão expirada.");
-        if (pauta.cpfAlreadyVoted(cpf)) throw new RequiredObjectIsNullException("Voto já foi realizado por esse associado.");
-        if(!validarCpf.validar(cpf)) throw new RequiredObjectIsNullException("Associado não apode realizar o voto.");
+        if (pauta.sessionExpired()) throw new ResourceNotFoundException("Sessão expirada.");
+        if (pauta.cpfAlreadyVoted(cpf)) throw new CpfDuplicadoException("Voto já foi realizado por esse associado.");
+        if(!validarCpf.validar(cpf)) throw new RequiredObjectIsNullException("Associado não pode realizar o voto.");
         return true;
     }
 

@@ -2,9 +2,7 @@ package br.com.pauta.exceptions.handler;
 
 import java.util.Date;
 
-import br.com.pauta.exceptions.ExceptionResponse;
-import br.com.pauta.exceptions.RequiredObjectIsNullException;
-import br.com.pauta.exceptions.ResourceNotFoundException;
+import br.com.pauta.exceptions.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,4 +52,27 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CpfDuplicadoException.class)
+    public final ResponseEntity<ExceptionResponse> handleDuplicateRequestExceptions(
+            Exception ex, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(CpfUnableException.class)
+    public final ResponseEntity<ExceptionResponse> handleCpfUnableRequestExceptions(
+            Exception ex, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 }

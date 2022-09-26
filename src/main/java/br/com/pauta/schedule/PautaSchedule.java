@@ -21,9 +21,6 @@ public class PautaSchedule {
     private static final Logger logger = LoggerFactory.getLogger(PautaSchedule.class);
 
     @Autowired
-    PautaService pautaService;
-
-    @Autowired
     SessaoService sessaoService;
 
     @Autowired
