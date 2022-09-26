@@ -20,8 +20,8 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(new ApiInfoBuilder()
-                        .title("Sistema de pautas da assembleia")
-                        .description("Endpoints da aplicação")
+                        .title("Pautas API")
+                        .description("Endpoints da aplicação para gerenciamento de pautas e sessões de votação")
                         .version("1.0.0")
                         .build());
     }
